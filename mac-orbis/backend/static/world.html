@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+	<meta charset="utf-8">
+	<title>Mac Orbis — Monde</title>
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+	<link rel="stylesheet" href="/assets/common.css">
+
+	<style>
+		body {
+			margin: 0;
+			background: #0f172a;
+			color: white;
+			font-family: system-ui, sans-serif;
+		}
+
+		#map {
+			width: 100vw;
+			height: calc(100vh - 60px);
+		}
+	</style>
+</head>
+
+<body>
+
+	<div id="header-container"></div>
+
+	<script>
+		fetch("/header")
+			.then(r => r.text())
+			.then(html => {
+				document.getElementById("header-container").innerHTML = html;
+				document.getElementById("nav-world")
+					?.classList.add("active");
+			});
+	</script>
+
+	<div id="map"></div>
+
+	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+	<script>
+
+		const map = L.map('map').setView([25, 0], 2);
+
+		L.tileLayer(
+			'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+			{
+				maxZoom: 18,
+				attribution: '&copy; OpenStreetMap'
+			}
+		).addTo(map);
+
+		async function loadConnections() {
+
+			const response = await fetch('/connections');
+			const data = await response.json();
+
+			data.forEach(c => {
+
+				if (!c.latitude || !c.longitude)
+					return;
+
+				const popup = `
+            <b>${c.process}</b><br>
+            ${c.service || "Inconnu"}<br>
+            ${c.country || "?"}<br>
+            ${c.remote_hostname || c.remote_ip}
+        `;
+
+				L.circleMarker(
+					[c.latitude, c.longitude],
+					{
+						radius: 8,
+						weight: 1
+					}
+				)
+					.addTo(map)
+					.bindPopup(popup);
+
+			});
+		}
+
+		loadConnections();
+
+	</script>
+
+</body>
+
+</html>
