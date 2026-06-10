@@ -1,1 +1,138 @@
-# Mac-Orbis-for-Mac
+Mac Orbis
+
+Mac Orbis est un outil de visualisation des connexions réseau pour macOS.
+
+Il permet d’identifier en temps réel :
+
+* les processus actifs ;
+* les connexions réseau sortantes ;
+* les services utilisés ;
+* les pays de destination ;
+* les statistiques historiques ;
+* les relations entre applications et destinations.
+
+Fonctionnalités
+
+Tableau en temps réel
+
+Affichage des connexions réseau actives :
+
+* processus ;
+* PID ;
+* destination ;
+* pays ;
+* service détecté ;
+* ports utilisés.
+
+Graphe interactif
+
+Visualisation graphique des relations :
+
+```Application
+    │
+    ├── Service
+    │      └── Destination
+```
+
+Permet d’identifier rapidement les applications communiquant avec Internet.
+
+Carte du monde
+
+Affichage géographique des connexions détectées grâce à la base GeoLite2 de MaxMind.
+
+Historique
+
+Stockage local des connexions dans une base SQLite afin d’analyser l’activité réseau dans le temps.
+
+Statistiques
+
+Agrégation des connexions par :
+
+* processus ;
+* service ;
+* destination.
+
+⸻
+
+Technologies utilisées
+
+Backend :
+
+* Python 3.9+
+* FastAPI
+* SQLite
+* MaxMind GeoLite2
+
+Frontend :
+
+* HTML5
+* CSS3
+* JavaScript
+* D3.js
+* Leaflet
+
+⸻
+
+Installation
+
+Cloner le dépôt
+
+```git clone https://github.com/VOTRE_COMPTE/mac-orbis.git
+cd mac-orbis
+```
+
+Créer un environnement virtuel
+```python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Installer les dépendances
+```pip install -r requirements.txt
+```
+
+Télécharger GeoLite2
+```Téléchargez la base GeoLite2 City depuis :
+
+Inscription MaxMind : https://www.maxmind.com/en/geolite2/signup
+ou directement sur le dépôt GitHub MaxMind : https://github.com/P3TERX/GeoLite.mmdb
+
+Puis placez le fichier :
+
+```text
+backend/data/GeoLite2-City.mmdb
+```
+⸻
+
+Lancement
+```python -m uvicorn backend.main:app --reload
+```
+
+Inteface disponible sur
+```http://127.0.0.1:8000
+```
+⸻
+
+Limitations
+
+Sous macOS, certaines informations réseau nécessitent des privilèges supplémentaires.
+Le mode lsof est actuellement utilisé comme méthode de collecte stable.
+Le support avancé de nettop est en cours de développement.
+
+⸻
+
+Roadmap
+
+* Support complet de nettop
+* Mise à jour temps réel via WebSocket
+* Cartographie ASN
+* Détection automatique des fournisseurs cloud
+* Export CSV
+* Export PDF
+* Historique avancé
+* Alertes réseau
+
+⸻
+
+Licence
+
+MIT License
