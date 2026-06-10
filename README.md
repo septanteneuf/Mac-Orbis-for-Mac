@@ -1,5 +1,17 @@
 Mac Orbis est un outil de visualisation des connexions réseau pour macOS.
 
+## Tableau de bord
+
+![Dashboard](screenshots/dashboard.png)
+
+## Graphe des connexions
+
+![Graph](screenshots/graph.png)
+
+## Carte du monde
+
+![World](screenshots/world.png)
+
 Il permet d’identifier en temps réel :
 
 - les processus actifs ;
