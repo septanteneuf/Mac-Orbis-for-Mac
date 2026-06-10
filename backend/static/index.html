@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+	<meta charset="utf-8">
+	<title>Mac Orbis — Tableau</title>
+
+	<link rel="stylesheet" href="/assets/common.css">
+
+	<style>
+		body {
+			font-family: system-ui, sans-serif;
+			background: #0f172a;
+			color: #e5e7eb;
+			margin: 0;
+		}
+
+		main {
+			padding: 24px;
+		}
+
+		.muted {
+			color: #9ca3af;
+		}
+
+		.toolbar {
+			display: flex;
+			gap: 12px;
+			margin: 18px 0;
+			align-items: center;
+			flex-wrap: wrap;
+		}
+
+		input,
+		select {
+			background: #1f2937;
+			color: #e5e7eb;
+			border: 1px solid #374151;
+			border-radius: 8px;
+			padding: 8px 10px;
+			font-size: 14px;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			background: #111827;
+			margin-top: 16px;
+			border: 1px solid #374151;
+		}
+
+		th,
+		td {
+			padding: 9px 10px;
+			border-bottom: 1px solid #374151;
+			font-size: 14px;
+			vertical-align: top;
+		}
+
+		th {
+			text-align: left;
+			background: #1f2937;
+			z-index: 5;
+		}
+
+		tr:hover {
+			background: #172554;
+		}
+
+		.host {
+			color: #93c5fd;
+			font-weight: 600;
+		}
+
+		.ip {
+			color: #9ca3af;
+			font-size: 12px;
+			word-break: break-all;
+		}
+
+		.badge {
+			display: inline-block;
+			padding: 2px 8px;
+			border-radius: 999px;
+			background: #334155;
+			font-size: 12px;
+			color: #cbd5e1;
+		}
+
+		.badge.internet {
+			background: #064e3b;
+			color: #bbf7d0;
+		}
+
+		.badge.local {
+			background: #334155;
+			color: #cbd5e1;
+		}
+
+		.badge.unknown {
+			background: #78350f;
+			color: #fde68a;
+		}
+
+		.stats {
+			display: flex;
+			gap: 12px;
+			flex-wrap: wrap;
+			margin-top: 16px;
+		}
+
+		.card {
+			background: #111827;
+			border: 1px solid #374151;
+			border-radius: 12px;
+			padding: 12px 14px;
+			min-width: 160px;
+		}
+
+		.card strong {
+			display: block;
+			font-size: 22px;
+			margin-bottom: 3px;
+		}
+
+		.card span {
+			color: #9ca3af;
+			font-size: 13px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="header-container"></div>
+
+	<script>
+		fetch("/header")
+			.then(r => r.text())
+			.then(html => {
+				document.getElementById("header-container").innerHTML = html;
+				document.getElementById("nav-tableau")
+					?.classList.add("active");
+			});
+	</script>
+
+	<main>
+		<p class="muted">Connexions réseau actives avec résolution DNS inverse et identification des services.</p>
+
+		<div class="stats">
+			<div class="card">
+				<strong id="connectionCount">0</strong>
+				<span>connexions actives</span>
+			</div>
+
+			<div class="card">
+				<strong id="processCount">0</strong>
+				<span>processus</span>
+			</div>
+
+			<div class="card">
+				<strong id="serviceCount">0</strong>
+				<span>services</span>
+			</div>
+		</div>
+
+		<div class="toolbar">
+			<input id="search" placeholder="Recherche processus, service, IP...">
+
+			<select id="serviceFilter">
+				<option value="">Tous les services</option>
+			</select>
+
+			<label class="muted">
+				<input type="checkbox" id="showLocal">
+				afficher local
+			</label>
+		</div>
+
+		<table>
+			<thead>
+				<tr>
+					<th>Processus</th>
+					<th>PID</th>
+					<th>Service</th>
+					<th>Pays</th>
+					<th>Destination</th>
+					<th>Port</th>
+					<th>Type</th>
+					<th>IP locale</th>
+				</tr>
+			</thead>
+
+			<tbody id="rows"></tbody>
+		</table>
+	</main>
+
+	<script>
+		let latestData = [];
+
+		function normalizeProcessName(name) {
+			return String(name || "").replaceAll("\\x20", " ");
+		}
+
+		async function refresh() {
+			const res = await fetch('/connections?ts=' + Date.now());
+			latestData = await res.json();
+
+			populateServiceFilter();
+			render();
+		}
+
+		function populateServiceFilter() {
+			const select = document.getElementById("serviceFilter");
+			const current = select.value;
+
+			const services = Array.from(
+				new Set(latestData.map(c => c.service || "Inconnu"))
+			).sort();
+
+			select.innerHTML = '<option value="">Tous les services</option>';
+
+			for (const service of services) {
+				const option = document.createElement("option");
+				option.value = service;
+				option.textContent = service;
+				select.appendChild(option);
+			}
+
+			select.value = current;
+		}
+
+		function render() {
+			const search = document.getElementById("search").value.toLowerCase();
+			const serviceFilter = document.getElementById("serviceFilter").value;
+			const showLocal = document.getElementById("showLocal").checked;
+
+			let data = latestData
+				.filter(c => showLocal || !c.is_local)
+				.filter(c => !serviceFilter || (c.service || "Inconnu") === serviceFilter)
+				.filter(c => JSON.stringify(c).toLowerCase().includes(search));
+
+			const processes = new Set(data.map(c => `${c.process}:${c.pid}`));
+			const services = new Set(data.map(c => c.service || "Inconnu"));
+
+			document.getElementById("connectionCount").textContent = data.length;
+			document.getElementById("processCount").textContent = processes.size;
+			document.getElementById("serviceCount").textContent = services.size;
+
+			document.getElementById('rows').innerHTML = data.map(c => {
+				const service = c.service || "Inconnu";
+				const typeClass = c.is_local ? "local" : service === "Inconnu" ? "unknown" : "internet";
+
+				return `
+        	<tr>
+				<td>${normalizeProcessName(c.process)}</td>
+				<td>${c.pid}</td>
+				<td><span class="badge">${service}</span></td>
+				<td>${c.country || "—"}</td>
+				<td>
+					<div class="host">${c.remote_hostname || 'Nom inconnu'}</div>
+					<div class="ip">${c.remote_ip}</div>
+				</td>
+				<td>${c.remote_port ?? ''}</td>
+				<td>
+					<span class="badge ${typeClass}">${c.is_local ? 'Local' : 'Internet'}</span>
+				</td>
+				<td class="ip">${c.local_ip}:${c.local_port || ''}</td>
+			</tr>
+        `;
+			}).join('');
+		}
+
+		document.getElementById("search").addEventListener("input", render);
+		document.getElementById("serviceFilter").addEventListener("change", render);
+		document.getElementById("showLocal").addEventListener("change", render);
+
+		refresh();
+		setInterval(refresh, 3000);
+	</script>
+</body>
+
+</html>
