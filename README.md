@@ -91,13 +91,13 @@ Installer les dépendances
 ``` pip install -r requirements.txt
 ```
 
-Télécharger GeoLite2
-``` Téléchargez la base GeoLite2 City depuis :
+## Télécharger GeoLite2
 
 Inscription MaxMind : https://www.maxmind.com/en/geolite2/signup
-ou directement sur le dépôt GitHub MaxMind : https://github.com/P3TERX/GeoLite.mmdb
 
-Puis placez le fichier :
+Ou dépôt GitHub non officiel utilisé pendant le développement : https://github.com/P3TERX/GeoLite.mmdb
+
+Puis placez le fichier ici :
 
 ```text
 backend/data/GeoLite2-City.mmdb
@@ -105,11 +105,15 @@ backend/data/GeoLite2-City.mmdb
 ⸻
 
 ## Lancement
-``` python -m uvicorn backend.main:app --reload
+
+```bash
+python -m uvicorn backend.main:app --reload
 ```
 
-## Inteface disponible sur
-``` http://127.0.0.1:8000
+## Interface disponible sur
+
+```text
+http://127.0.0.1:8000
 ```
 ⸻
 
