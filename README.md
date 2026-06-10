@@ -33,7 +33,7 @@ Il permet d’identifier en temps réel :
 
 Visualisation graphique des relations :
 
-```Application
+``` Application
     │
     ├── Service
     │      └── Destination
@@ -78,21 +78,21 @@ Installation
 
 Cloner le dépôt
 
-```git clone https://github.com/VOTRE_COMPTE/mac-orbis.git
+``` git clone https://github.com/VOTRE_COMPTE/mac-orbis.git
 cd mac-orbis
 ```
 
 Créer un environnement virtuel
-```python3 -m venv .venv
+``` python3 -m venv .venv
 source .venv/bin/activate
 ```
 
 Installer les dépendances
-```pip install -r requirements.txt
+``` pip install -r requirements.txt
 ```
 
 Télécharger GeoLite2
-```Téléchargez la base GeoLite2 City depuis :
+``` Téléchargez la base GeoLite2 City depuis :
 
 Inscription MaxMind : https://www.maxmind.com/en/geolite2/signup
 ou directement sur le dépôt GitHub MaxMind : https://github.com/P3TERX/GeoLite.mmdb
@@ -105,11 +105,11 @@ backend/data/GeoLite2-City.mmdb
 ⸻
 
 ## Lancement
-```python -m uvicorn backend.main:app --reload
+``` python -m uvicorn backend.main:app --reload
 ```
 
 ## Inteface disponible sur
-```http://127.0.0.1:8000
+``` http://127.0.0.1:8000
 ```
 ⸻
 
