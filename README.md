@@ -132,3 +132,15 @@ Le support avancé de nettop est en cours de développement.
 ## Licence
 
 MIT License
+
+⸻
+
+## Remerciements
+
+Merci aux auteurs des projets et bibliothèques open source qui ont contribué indirectement à ce projet.
+
+- MaxMind pour la base de géolocalisation GeoLite2
+- P3TERX pour la mise à disposition de ressources autour de GeoLite et de la géolocalisation IP
+- FastAPI
+- D3.js
+- Leaflet
