@@ -74,28 +74,21 @@ Backend :
 
 ⸻
 
-Installation
+## Installation
 
 Cloner le dépôt
 
-``` git clone https://github.com/VOTRE_COMPTE/mac-orbis.git
-cd mac-orbis
-```
-
-Créer un environnement virtuel
-``` python3 -m venv .venv
+``` git clone https://github.com/septanteneuf/Mac-Orbis-for-Mac.git
+cd Mac-Orbis-for-Mac
+python3 -m venv .venv
 source .venv/bin/activate
-```
-
-Installer les dépendances
-``` pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Télécharger GeoLite2
 
-Inscription MaxMind : https://www.maxmind.com/en/geolite2/signup
-
-Ou dépôt GitHub non officiel utilisé pendant le développement : https://github.com/P3TERX/GeoLite.mmdb
+- Inscription MaxMind : https://www.maxmind.com/en/geolite2/signup
+- Dépôt GitHub MaxMind : https://github.com/maxmind
 
 Puis placez le fichier ici :
 
@@ -117,7 +110,7 @@ http://127.0.0.1:8000
 ```
 ⸻
 
-Limitations
+## Limitations
 
 Sous macOS, certaines informations réseau nécessitent des privilèges supplémentaires.
 Le mode lsof est actuellement utilisé comme méthode de collecte stable.
@@ -136,6 +129,6 @@ Le support avancé de nettop est en cours de développement.
 
 ⸻
 
-Licence
+## Licence
 
 MIT License
