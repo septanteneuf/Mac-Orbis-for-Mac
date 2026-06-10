@@ -1,30 +1,23 @@
-Mac Orbis
-
 Mac Orbis est un outil de visualisation des connexions réseau pour macOS.
 
 Il permet d’identifier en temps réel :
 
-* les processus actifs ;
-* les connexions réseau sortantes ;
-* les services utilisés ;
-* les pays de destination ;
-* les statistiques historiques ;
-* les relations entre applications et destinations.
+- les processus actifs ;
+- les connexions réseau sortantes ;
+- les services utilisés ;
+- les pays de destination ;
+- les statistiques historiques ;
+- les relations entre applications et destinations.
 
-Fonctionnalités
+## Fonctionnalités
 
-Tableau en temps réel
-
-Affichage des connexions réseau actives :
-
-* processus ;
-* PID ;
-* destination ;
-* pays ;
-* service détecté ;
-* ports utilisés.
-
-Graphe interactif
+- Surveillance réseau en temps réel
+- Identification des processus
+- Résolution DNS inverse
+- Géolocalisation IP
+- Graphe des connexions
+- Historique SQLite
+- Tableau statistique
 
 Visualisation graphique des relations :
 
@@ -36,40 +29,36 @@ Visualisation graphique des relations :
 
 Permet d’identifier rapidement les applications communiquant avec Internet.
 
-Carte du monde
+## Carte du monde
 
 Affichage géographique des connexions détectées grâce à la base GeoLite2 de MaxMind.
 
-Historique
+## Historique
 
 Stockage local des connexions dans une base SQLite afin d’analyser l’activité réseau dans le temps.
 
-Statistiques
-
+## Statistiques
 Agrégation des connexions par :
 
-* processus ;
-* service ;
-* destination.
+- processus ;
+- service ;
+- destination.
 
 ⸻
 
-Technologies utilisées
-
+## Technologies utilisées
 Backend :
+- Python 3.9+
+- FastAPI
+- SQLite
+- MaxMind GeoLite2
 
-* Python 3.9+
-* FastAPI
-* SQLite
-* MaxMind GeoLite2
-
-Frontend :
-
-* HTML5
-* CSS3
-* JavaScript
-* D3.js
-* Leaflet
+## Frontend :
+- HTML5
+- CSS3
+- JavaScript
+- D3.js
+- Leaflet
 
 ⸻
 
@@ -103,11 +92,11 @@ backend/data/GeoLite2-City.mmdb
 ```
 ⸻
 
-Lancement
+## Lancement
 ```python -m uvicorn backend.main:app --reload
 ```
 
-Inteface disponible sur
+## Inteface disponible sur
 ```http://127.0.0.1:8000
 ```
 ⸻
@@ -120,16 +109,14 @@ Le support avancé de nettop est en cours de développement.
 
 ⸻
 
-Roadmap
+## Roadmap
 
-* Support complet de nettop
-* Mise à jour temps réel via WebSocket
-* Cartographie ASN
-* Détection automatique des fournisseurs cloud
-* Export CSV
-* Export PDF
-* Historique avancé
-* Alertes réseau
+- [ ] Support complet de nettop
+- [ ] WebSocket temps réel
+- [ ] Cartographie ASN
+- [ ] Export CSV
+- [ ] Export PDF
+- [ ] Alertes réseau
 
 ⸻
 
